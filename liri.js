@@ -38,7 +38,6 @@ switch (command) {
 
 
 function twitterA() {
-
     var client = new twitter({
         consumer_key: keyList.consumer_key,
         consumer_secret: keyList.consumer_secret,
@@ -49,22 +48,28 @@ function twitterA() {
     var params = {screen_name: 'arielbear99'};
 
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
-       if (error) {
-           throw oops(error);
-       }
+        if (error) {
+            throw oops(error);
+        }
         var tweetArray = tweets;
-        for (var i = 0; i < tweetArray.length; i++){
+        for (var i = 0; i < tweetArray.length; i++) {
             console.log(green(tweetArray[i].created_at) + ' - ' + cyan(tweetArray[i].text));
         }
+        fs.appendFile('log.txt', "arielbear99's most recent tweet: " + tweetArray[0].created_at + " - " + tweetArray[0].text + "\n", function(error) {
+            if (error) {
+                throw (error);
+            }
+        })
     })
 } // end twitter() function
 
 
 function spotifyA() {
-        if (search === undefined) {
-            search = 'The Sign';
-        };
-    spotify.search({ type: 'track', query: search, limit: 1}, function(error, data) {
+    if (search === undefined) {
+        search = 'The Sign';
+    }
+    ;
+    spotify.search({type: 'track', query: search, limit: 1}, function (error, data) {
         if (error) {
             throw oops(error);
         }
@@ -72,6 +77,11 @@ function spotifyA() {
         console.log(magenta('Song: ' + data.tracks.items[0].name));
         console.log(magenta('Preview Link: ' + data.tracks.items[0].preview_url));
         console.log(magenta('Album: ' + data.tracks.items[0].album.name));
+        fs.appendFile('log.txt', "Spotify-ed this song: " + data.tracks.items[0].name + " by " + data.tracks.items[0].album.artists[0].name + "\n", function(error) {
+            if (error) {
+                throw (error);
+            }
+        })
 
     });
 } // end spotifyA() function
@@ -93,20 +103,25 @@ function movieA() {
         console.log(blue('Actors: ' + movie.Actors));
         console.log(blue('Rotten Tomatoes Rating: ' + movie.tomatoRating));
         console.log(blue('Rotten Tomatoes URL: ' + movie.tomatoURL));
+        fs.appendFile('log.txt', "Movie-ed this: " + movie.Title + " with " + movie.Actors + "\n", function(error) {
+            if (error) {
+                throw (error);
+            }
+        })
     });
 
 } // end movieA() function
 
 function doThis() {
     // reading random.txt
-    fs.readFile('random.txt', 'utf8', function(error, data) {
-        if (error){
+    fs.readFile('random.txt', 'utf8', function (error, data) {
+        if (error) {
             throw oops(error);
         }
         // finds index of comma in .txt file. Splits two parts of .txt files, assigns them to new vars, re-assigns these vars to command and search vars
         var splitIndex = data.indexOf(',');
         var thisCommand = data.substring(0, splitIndex);
-        var thisSearch = data.substring(splitIndex+1);
+        var thisSearch = data.substring(splitIndex + 1);
         command = thisCommand;
         search = thisSearch;
 
@@ -126,6 +141,7 @@ function doThis() {
                 break;
             default:
                 console.log(oops('Something went Wrong... Try again'));
-        };
+        }
+        ;
     });
 } // end doThis() function
