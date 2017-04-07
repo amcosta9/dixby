@@ -18,18 +18,38 @@ var theKeys = require("./keys.js"),
 switch (command) {
     case 'my-tweets':
         console.log(red('...Getting Tweets...'));
+        fs.appendFile('log.txt', "...Getting Tweets...\n", function(error) {
+            if (error) {
+                throw (error);
+            }
+        });
         twitterA();
         break;
     case 'spotify-this-song':
         console.log(red('...Searching for Song...'));
+        fs.appendFile('log.txt', "...Searching for Song...\n", function(error) {
+            if (error) {
+                throw (error);
+            }
+        });
         spotifyA();
         break;
     case 'movie-this':
         console.log(red('...Searching for Movie...'));
+        fs.appendFile('log.txt', "...Searching for Movie...\n", function(error) {
+            if (error) {
+                throw (error);
+            }
+        });
         movieA();
         break;
     case 'do-what-it-says':
         console.log(red('...Doing What it Says...'));
+        fs.appendFile('log.txt', "...Doing What it Says...\n", function(error) {
+            if (error) {
+                throw (error);
+            }
+        });
         doThis();
         break;
     default:
@@ -55,7 +75,7 @@ function twitterA() {
         for (var i = 0; i < tweetArray.length; i++) {
             console.log(green(tweetArray[i].created_at) + ' - ' + cyan(tweetArray[i].text));
         }
-        fs.appendFile('log.txt', "arielbear99's most recent tweet: " + tweetArray[0].created_at + " - " + tweetArray[0].text + "\n", function(error) {
+        fs.appendFile('log.txt', "arielbear99's most recent tweet: " + tweetArray[0].created_at + " - " + tweetArray[0].text + "\n++++++++++\n", function(error) {
             if (error) {
                 throw (error);
             }
@@ -77,7 +97,7 @@ function spotifyA() {
         console.log(magenta('Song: ' + data.tracks.items[0].name));
         console.log(magenta('Preview Link: ' + data.tracks.items[0].preview_url));
         console.log(magenta('Album: ' + data.tracks.items[0].album.name));
-        fs.appendFile('log.txt', "Spotify-ed this song: " + data.tracks.items[0].name + " by " + data.tracks.items[0].album.artists[0].name + "\n", function(error) {
+        fs.appendFile('log.txt', "Spotify-ed this song: " + data.tracks.items[0].name + " by " + data.tracks.items[0].album.artists[0].name + "\n++++++++++\n", function(error) {
             if (error) {
                 throw (error);
             }
@@ -87,7 +107,12 @@ function spotifyA() {
 } // end spotifyA() function
 
 function movieA() {
-    var movieName = search.replace(/ /g, '+');
+    if (search === undefined) {
+        search = "mr. nobody";
+    }
+    else {
+        var movieName = search.replace(/ /g, '+');
+    }
     var queryUrl = 'http://www.omdbapi.com/?t=' + movieName + '&tomatoes=true';
 
     request(queryUrl, function (error, response, data) {
@@ -103,7 +128,7 @@ function movieA() {
         console.log(blue('Actors: ' + movie.Actors));
         console.log(blue('Rotten Tomatoes Rating: ' + movie.tomatoRating));
         console.log(blue('Rotten Tomatoes URL: ' + movie.tomatoURL));
-        fs.appendFile('log.txt', "Movie-ed this: " + movie.Title + " with " + movie.Actors + "\n", function(error) {
+        fs.appendFile('log.txt', "Movie-ed this: " + movie.Title + " with " + movie.Actors + "\n++++++++++\n", function(error) {
             if (error) {
                 throw (error);
             }
