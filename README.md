@@ -13,7 +13,7 @@
    * `node liri.js do-what-it-says`
 
 ##### My Tweets
-* Display [my](https://twitter.com/arielbear99) 10 most recent Tweets.
+* Displays [my](https://twitter.com/arielbear99) most recent Tweets.
 * Uses the [Twitter npm package](https://www.npmjs.com/package/twitter) to make calls to [Twitter REST API](https://dev.twitter.com/rest/public).
 
 ##### Spotify This Song
